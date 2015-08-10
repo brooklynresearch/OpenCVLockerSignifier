@@ -10,8 +10,8 @@ void ofApp::setup(){
     // display vars mockup
     marginX = 0;
     marginY = 0;
-    dispWidth = 120;
-    dispHeight = 120;
+    dispWidth = 100;
+    dispHeight = 100;
     vidOriginX = 800;
     vidOriginY = 0;
     
@@ -21,7 +21,9 @@ void ofApp::setup(){
     
     string tempIPs[] = {"192.168.0.121", "192.168.0.156", "192.168.0.107", "192.168.0.104", "192.168.0.180"};
     
-    // initialize lockers
+    piIPAddresses[] = {"192.168.0.100", "192.168.0.101", "192.168.0.102", "192.168.0.103", "192.168.0.104", "192.168.0.105", "192.168.0.106", "192.168.0.107", "192.168.0.108", "192.168.0.109", "192.168.0.110", "192.168.0.111", "192.168.0.112", "192.168.0.113", "192.168.0.114", "192.168.0.115", "192.168.0.116"};
+    
+    // temp initialize lockers
     for(int col_i = 0 ; col_i < numColumns ; ++col_i){
         vector<Locker* > tempLockerCol;
         for(int row_i = 0; row_i < numRows; ++row_i){

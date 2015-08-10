@@ -52,6 +52,10 @@ class ofApp : public ofBaseApp{
         int numRows;
         int numColumns;
     
+        // pi vars
+        string piIPAddresses[17];
+        string doubleLockers[4][4];
+    
         // display variables
         int dispState;
         int checkInDuration;
