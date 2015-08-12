@@ -12,16 +12,14 @@ void ofApp::setup(){
     marginY = 0;
     dispWidth = 100;
     dispHeight = 100;
-    vidOriginX = 800;
-    vidOriginY = 0;
+    vidOriginX = 10;
+    vidOriginY = 10;
     
     // lock time variables
     checkInDuration = 45000;
     pickUpDuration = 45000;
     
     string tempIPs[] = {"192.168.0.121", "192.168.0.156", "192.168.0.107", "192.168.0.104", "192.168.0.180"};
-    
-    piIPAddresses[] = {"192.168.0.100", "192.168.0.101", "192.168.0.102", "192.168.0.103", "192.168.0.104", "192.168.0.105", "192.168.0.106", "192.168.0.107", "192.168.0.108", "192.168.0.109", "192.168.0.110", "192.168.0.111", "192.168.0.112", "192.168.0.113", "192.168.0.114", "192.168.0.115", "192.168.0.116"};
     
     // temp initialize lockers
     for(int col_i = 0 ; col_i < numColumns ; ++col_i){
@@ -53,13 +51,13 @@ void ofApp::setup(){
     
     sourceVid.loadMovie("movies/fingers.mov");
     sourceVid.play();
-    vidOriginX = sourceVid.getWidth();
+//    vidOriginX = sourceVid.getWidth();
     
     // camera feed
     sourceCam.setDeviceID(0);
     sourceCam.setDesiredFrameRate(30);
     sourceCam.initGrabber(160, 120);
-    vidOriginX = sourceCam.getWidth();
+//    vidOriginX = sourceCam.getWidth();
     
     ofLog() << ofGetSystemTime() << endl;
     
@@ -416,6 +414,8 @@ void ofApp::sendMessages() {
     // send OSC Messages
     for(int i = 0; i < numColumns; ++i){
         for(int j = 0; j < numRows; ++j){
+            // temp
+            
             // send color state
             ofxOscMessage m;
             ofColor tempColor = lockers[i][j]->getColor();
@@ -427,6 +427,20 @@ void ofApp::sendMessages() {
             m.addIntArg(tempColor.g);
             m.addIntArg(tempColor.b);
             sender.sendMessage(m);
+            
+            // final
+            /*
+            ofxOscMessage m;
+            ofColor tempColor = lockers[i][j]->getColor();
+            //            ofLog() << "row " << ofToString(i) << " col " << ofToString(j) << endl;
+            sender.setup(lockers[i][j]->ipAddress, PORT);
+            m.setAddress("/" + ofToString(j));
+            m.addIntArg(tempColor.r);
+            m.addIntArg(tempColor.g);
+            m.addIntArg(tempColor.b);
+            sender.sendMessage(m);
+             
+             */
         }
     }
 }

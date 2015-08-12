@@ -2,6 +2,8 @@
 
 import OSC
 import logging
+import time
+import datetime
 from flask import Flask, Response, jsonify, json, request
 
 app = Flask(__name__)
@@ -60,6 +62,13 @@ def message_time():
     oscmsg.append(request.json['device_id'])
     c.send(oscmsg)
 
+    print "received json request: " + str(datetime.datetime.now())
+    print json.dumps(request.json)
+
+    app.logger.error("received json request: " + str(datetime.datetime.now()))
+    app.logger.error(json.dumps(request.json))
+
+
     resp = Response(json.dumps(request.json), status=200, mimetype='application/json')
     # return "JSON Message: " + json.dumps(request.json)
     return resp
@@ -86,5 +95,6 @@ def wowter(_row, _col, _state):
 
 if __name__ == "__main__":
   c.connect(('127.0.0.1', 9998))
-  print "jam"
+  print "started flask server: " + str(datetime.datetime.now())
+  app.logger.error("started flask server: " + str(datetime.datetime.now()))
   app.run(host='0.0.0.0', port=5000, debug=True)
