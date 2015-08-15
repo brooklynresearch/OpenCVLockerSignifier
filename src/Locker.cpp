@@ -18,6 +18,7 @@ Locker::Locker(int _row, int _col, string _ipAddress)
     row = _row;
     ipAddress = _ipAddress;
     currentState = 0;
+    deviceID = 0;
     
 }
 

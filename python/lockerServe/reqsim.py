@@ -4,7 +4,7 @@
 import requests
 import json
 
-payload = {'row': 5, 'col': 4, 'state': 1, 'device_id': 0}
+payload = {'row': 5, 'col': 7, 'state': 1, 'device_id': 2}
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 r = requests.post("http://localhost:5000/messages", data=json.dumps(payload), headers=headers)

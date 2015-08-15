@@ -41,6 +41,7 @@ class ofApp : public ofBaseApp{
         void concentrics(int _x, int _y);
         void mosaic();
         void colorStripes();
+        void randomSet();
     
         ofColor wheel(int WheelPos);
     
@@ -58,6 +59,7 @@ class ofApp : public ofBaseApp{
     
         // display variables
         int dispState;
+        bool manualSwitch;
         int checkInDuration;
         int pickUpDuration;
         long long stateChangeMillis;
@@ -66,6 +68,10 @@ class ofApp : public ofBaseApp{
         vector< ofPoint > unlocked;
         ofVideoPlayer sourceVid;
         ofVideoGrabber sourceCam;
+    
+        // Chase colors
+        ofColor CGreen;
+        ofColor COrange;
     
         // display vars
         int marginX;

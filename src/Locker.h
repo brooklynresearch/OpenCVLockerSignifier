@@ -34,6 +34,8 @@ class Locker {
     
         int column;
         int row;
+        int deviceID;
+        bool confirmed;
         bool oversized;
         int currentState;
         string ipAddress;

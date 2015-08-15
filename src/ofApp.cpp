@@ -7,19 +7,24 @@ void ofApp::setup(){
     numColumns = 17;
     dispState = 2;
     
+    // Chase colors
+    CGreen = ofColor(120, 190, 32);
+    COrange = ofColor(199, 108, 61);
+    
     // display vars mockup
     marginX = 0;
     marginY = 0;
-    dispWidth = 100;
-    dispHeight = 100;
+    dispWidth = 90;
+    dispHeight = 90;
     vidOriginX = 10;
     vidOriginY = 10;
+    manualSwitch = true;
     
     // lock time variables
     checkInDuration = 45000;
     pickUpDuration = 45000;
     
-    string tempIPs[] = {"192.168.0.121", "192.168.0.156", "192.168.0.107", "192.168.0.104", "192.168.0.180"};
+    string tempIPs[] = {"192.168.0.121", "192.168.0.153", "192.168.0.107", "192.168.0.104", "192.168.0.180"};
     
     // temp initialize lockers
     for(int col_i = 0 ; col_i < numColumns ; ++col_i){
@@ -31,8 +36,8 @@ void ofApp::setup(){
             if(col_i == 0 && row_i < 5){
                 tempLocker->setIP(tempIPs[row_i]);
             }
-            else if(col_i == 0 && row_i == 0){
-                tempLocker->setIP("192.168.0.178");
+            else if(col_i == 1 && row_i == 0){
+                tempLocker->setIP("192.168.0.82");
             }
             else {
                 tempLocker->setIP("192.168.0.144");
@@ -41,6 +46,17 @@ void ofApp::setup(){
         
         lockers.push_back(tempLockerCol);
     }
+    
+    // final lockers
+//    for(int col_i = 0 ; col_i < numColumns ; ++col_i){
+//        vector<Locker* > tempLockerCol;
+//        for(int row_i = 0; row_i < numRows; ++row_i){
+//            Locker* tempLocker = new Locker(col_i, row_i, piIPAddresses[numColumns]);
+//            tempLockerCol.push_back(tempLocker);
+//        }
+//        
+//        lockers.push_back(tempLockerCol);
+//    }
     
 
     for(int i = 0; i < lockers.size(); ++i){
@@ -69,7 +85,7 @@ void ofApp::setup(){
     
     ofSetColor(255,255,255);
     ofBackground(0,0,0);
-    ofSetFrameRate(30);
+    ofSetFrameRate(10);
 }
 
 //--------------------------------------------------------------
@@ -77,6 +93,20 @@ void ofApp::update(){
     
     // process through received OSC messages
     processMessages();
+    
+    long long currentTime = ofGetSystemTime();
+    // in milliseconds
+    
+    if(manualSwitch){
+        
+    }
+    else {
+        int switcher = currentTime % 10000; // change every 100 seconds
+        if(switcher < 100){
+            ++dispState;
+            dispState = dispState % 6;
+        }
+    }
     
     switch(dispState){
         case 0:
@@ -89,10 +119,13 @@ void ofApp::update(){
             colorSweep();
             break;
         case 3:
-            concentrics(9, 3);
+            concentrics(8, 4);
             break;
         case 4:
             colorStripes();
+            break;
+        case 5:
+            randomSet();
             break;
     }
     
@@ -133,11 +166,16 @@ void ofApp::keyPressed(int key){
         case OF_KEY_LEFT:
             dispState = dispState - 1;
             if (dispState < 0){
-                dispState = 4;
+                dispState = 5;
             }
             break;
         case OF_KEY_RIGHT:
-            dispState = (dispState + 1) % 5;
+            dispState = (dispState + 1) % 6;
+            break;
+            
+        case 'm':
+        case 'M':
+            manualSwitch = !manualSwitch;
             break;
     }
 }
@@ -259,7 +297,7 @@ void ofApp::pixellate(ofImage tempImg){
     
 }
 
-// algorithmic displays
+// algorithmic shows
 
 void ofApp::colorSweep() {
     
@@ -326,6 +364,25 @@ void ofApp::colorStripes() {
     }
 }
 
+void ofApp::randomSet(){
+    long long currentTime = ofGetSystemTime();
+    
+    ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
+    
+    int switcher = (currentTime % 300);
+    
+    ofLog() << "switcher is: " << ofToString(switcher) << endl;
+    
+    for(int i = 0; i < lockers.size(); ++i) {
+        for(int j = 0; j < lockers[i].size(); ++j){
+            if(switcher   >  200){
+                lockers[i][j]->setColor(colors[(rand())%4]);
+            }
+            
+        }
+    }
+}
+
 ofColor ofApp::wheel(int WheelPos) {
     WheelPos = 255 - WheelPos;
     if(WheelPos < 85) {
@@ -353,12 +410,47 @@ void ofApp::displayOpen() {
                     
                     ofLog() << "locker " << ofToString(i) << ", " << ofToString(j) << " is now closing" << endl;
                     lockers[i][j]->currentState = 0;
+                    ofxOscMessage lock;
+                    sender.setup(lockers[i][j]->ipAddress, PORT);
+                    lock.setAddress("/lock");
+                    lock.addIntArg(j);
+                    lock.addIntArg(1); // lock
+                    sender.sendMessage(lock);
                 }
                 else{
-                    ofColor tempColor(255,0,0);
+                    ofColor tempColor;
+                    
+                    int switcher = (currentTime % 500);
+                    
+                    if (switcher > 250) {
+                        tempColor = ofColor(1,121,193);
+                        switch(lockers[i][j]->deviceID){
+                            case 0:
+                                tempColor = ofColor(1,121,193);
+                                break;
+                            case 1:
+                                tempColor = CGreen;
+                                break;
+                            case 2:
+                                tempColor = COrange;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    else {
+                        tempColor = ofColor(185, 224, 247);
+                    }
+                    
                     ofLog() << "locker " << ofToString(i) << ", " << ofToString(j) << " is open" << endl;
                     lockers[i][j]->setColor(tempColor);
                     
+                    ofxOscMessage lock;
+                    sender.setup(lockers[i][j]->ipAddress, PORT);
+                    lock.setAddress("/lock");
+                    lock.addIntArg(j);
+                    lock.addIntArg(0); //unlock
+                    sender.sendMessage(lock);
                 }
                 
             }
@@ -376,35 +468,22 @@ void ofApp::processMessages() {
         int row = m.getArgAsInt32(0);
         int col = m.getArgAsInt32(1);
         int state = m.getArgAsInt32(2);
+        int deviceID = m.getArgAsInt32(3);
         
-        ofLog() << "message with address: " << m.getAddress() << " " << m.getArgAsInt32(0) << " " << m.getArgAsInt32(1) << " " << m.getArgAsInt32(2) << endl;
+        ofLog() << "message with address: " << m.getAddress() << " " << m.getArgAsInt32(0) << " " << m.getArgAsInt32(1) << " " << m.getArgAsInt32(2) << " " << m.getArgAsInt32(3) << endl;
         
 //        int row = m.getArgAsInt32(0);
 //        int col = m.getArgAsInt32(1);
 //        int state = m.getArgAsInt32(2);
         
-        if(state == 1){
-         
+        row = 1;
+        col = 0;
+//        if(state == 1){
+        
             lockers[col][row]->lockMillis = ofGetSystemTime();
             lockers[col][row]->currentState = 1;
-            ofPoint pointer = ofPoint(row,col);
-//            unlocked.push_back(pointer);
-
-            
-//            for(int i=0; i < unlocked.size(); i++){
-//                ofPoint temp = unlocked[i];
-//                ofLog() << ofToString(temp.x) << " and " << ofToString(temp.y) << endl;
-//            }
-        }
-        
-        else if (state == 1){
-            
-            
-        }
-        
-        m.getArgAsInt32(0);
-        m.getArgAsInt32(1);
-        ofBackground(m.getArgAsInt32(0), m.getArgAsInt32(1), m.getArgAsInt32(2));
+            lockers[col][row]->deviceID = deviceID;
+//        }
         
     }
 }
@@ -420,13 +499,30 @@ void ofApp::sendMessages() {
             ofxOscMessage m;
             ofColor tempColor = lockers[i][j]->getColor();
 //            ofLog() << "row " << ofToString(i) << " col " << ofToString(j) << endl;
-            sender.setup(lockers[i][j]->ipAddress, PORT);
-            m.setAddress("/led");
-            m.addIntArg(84);
-            m.addIntArg(tempColor.r);
-            m.addIntArg(tempColor.g);
-            m.addIntArg(tempColor.b);
-            sender.sendMessage(m);
+            
+            if(i == 1){
+                lockers[i][j]->setIP("192.168.0.82");
+                sender.setup(lockers[i][j]->ipAddress, 9998);
+                m.setAddress("/led");
+                m.addIntArg(j);
+                m.addIntArg(tempColor.r);
+                m.addIntArg(tempColor.g);
+                m.addIntArg(tempColor.b);
+                sender.sendMessage(m);
+            }
+            
+            else {
+                sender.setup(lockers[i][j]->ipAddress, PORT);
+                m.setAddress("/led");
+                m.addIntArg(84);
+                m.addIntArg(tempColor.r);
+                m.addIntArg(tempColor.g);
+                m.addIntArg(tempColor.b);
+                sender.sendMessage(m);
+            }
+            
+            
+            
             
             // final
             /*
@@ -439,14 +535,8 @@ void ofApp::sendMessages() {
             m.addIntArg(tempColor.g);
             m.addIntArg(tempColor.b);
             sender.sendMessage(m);
-             
+        
              */
         }
     }
 }
-//
-//for(int i = 0; i < numColumns; ++i){
-//    for(int j = 0; j < numRows; ++j){
-//        lockers[i][j];
-//    }
-//}

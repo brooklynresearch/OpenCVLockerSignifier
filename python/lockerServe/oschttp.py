@@ -39,7 +39,13 @@ def jsonny():
 
 @app.route('/messages', methods=['GET', 'POST'])
 def message_time():
-  print "got in"
+
+  print "received json request: " + str(datetime.datetime.now())
+  print json.dumps(request.json)
+
+  app.logger.error("received json request: " + str(datetime.datetime.now()))
+  app.logger.error(json.dumps(request.json))
+
   print request.headers
   print request.data
   print request.json
@@ -49,6 +55,7 @@ def message_time():
     return "Text Message: " + request.data
 
   elif request.headers['Content-Type'] == 'application/json':
+
     print request.json['row']
     print request.json['col']
     print request.json['state']
@@ -62,11 +69,10 @@ def message_time():
     oscmsg.append(request.json['device_id'])
     c.send(oscmsg)
 
-    print "received json request: " + str(datetime.datetime.now())
-    print json.dumps(request.json)
+    print "sent OSC message at: " + str(datetime.datetime.now())
+    app.logger.error("sent OSC message at: " + str(datetime.datetime.now()))
 
-    app.logger.error("received json request: " + str(datetime.datetime.now()))
-    app.logger.error(json.dumps(request.json))
+    
 
 
     resp = Response(json.dumps(request.json), status=200, mimetype='application/json')
