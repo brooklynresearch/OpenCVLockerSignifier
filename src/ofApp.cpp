@@ -10,6 +10,7 @@ void ofApp::setup(){
     // Chase colors
     CGreen = ofColor(120, 190, 32);
     COrange = ofColor(199, 108, 61);
+    CYellow = ofColor(255, 218, 0);
     
     // display vars mockup
     marginX = 0;
@@ -30,18 +31,20 @@ void ofApp::setup(){
     for(int col_i = 0 ; col_i < numColumns ; ++col_i){
         vector<Locker* > tempLockerCol;
         for(int row_i = 0; row_i < numRows; ++row_i){
-            Locker* tempLocker = new Locker(col_i, row_i, "192.168.0.126");
+//            Locker* tempLocker = new Locker(col_i, row_i, "192.168.0.126");
+            Locker* tempLocker = new Locker(col_i, row_i, piIPAddresses[col_i]);
             tempLockerCol.push_back(tempLocker);
+
             
-            if(col_i == 0 && row_i < 5){
-                tempLocker->setIP(tempIPs[row_i]);
-            }
-            else if(col_i == 1 && row_i == 0){
-                tempLocker->setIP("192.168.0.82");
-            }
-            else {
-                tempLocker->setIP("192.168.0.144");
-            }
+//            if(col_i == 0 && row_i < 5){
+//                tempLocker->setIP(tempIPs[row_i]);
+//            }
+//            else if(col_i == 1 && row_i == 0){
+//                tempLocker->setIP("192.168.0.82");
+//            }
+//            else {
+//                tempLocker->setIP("192.168.0.144");
+//            }
         }
         
         lockers.push_back(tempLockerCol);
@@ -310,6 +313,8 @@ void ofApp::colorSweep() {
         for(int j = 0; j < lockers[i].size(); ++j){
             
             lockers[i][j]->setColor(wheel((j*lockers.size()+i+switcher)%255));
+//            lockers[i][j]->setColor(wheel((switcher)%255));
+//            lockers[i][j]->setColor(lockers[0][0]->getColor());
         }
     }
 }
@@ -426,13 +431,13 @@ void ofApp::displayOpen() {
                         tempColor = ofColor(1,121,193);
                         switch(lockers[i][j]->deviceID){
                             case 0:
-                                tempColor = ofColor(1,121,193);
-                                break;
-                            case 1:
                                 tempColor = CGreen;
                                 break;
-                            case 2:
+                            case 1:
                                 tempColor = COrange;
+                                break;
+                            case 2:
+                                tempColor = CYellow;
                                 break;
                             default:
                                 break;
@@ -476,8 +481,8 @@ void ofApp::processMessages() {
 //        int col = m.getArgAsInt32(1);
 //        int state = m.getArgAsInt32(2);
         
-        row = 1;
-        col = 0;
+//        row = 1;
+//        col = 0;
 //        if(state == 1){
         
             lockers[col][row]->lockMillis = ofGetSystemTime();
@@ -490,53 +495,50 @@ void ofApp::processMessages() {
 
 void ofApp::sendMessages() {
     
+    // may possibly change this to send at the very end of going through each row of a column
+    // so no more separate addresses, just a single long message
+    
     // send OSC Messages
+//    for(int i = 0; i < numColumns; ++i){
+//        for(int j = 0; j < numRows; ++j){
+//            
+//            // send color state
+//            ofxOscMessage m;
+//            ofColor tempColor = lockers[i][j]->getColor();
+////            ofLog() << "row " << ofToString(i) << " col " << ofToString(j) << endl;
+//            
+//            if(j < 5){
+//            sender.setup(lockers[i][j]->ipAddress, PORT);
+//            m.setAddress("/led");
+//            m.addIntArg(j);
+//            m.addIntArg(tempColor.r);
+//            m.addIntArg(tempColor.g);
+//            m.addIntArg(tempColor.b);
+//            sender.sendMessage(m);
+//            }
+//        }
+//    }
+
+//     for if we switch to single messages per pi
     for(int i = 0; i < numColumns; ++i){
+        ofxOscMessage m;
+        m.setAddress("/led");
+        sender.setup(lockers[i][0]->ipAddress, PORT);
         for(int j = 0; j < numRows; ++j){
-            // temp
             
             // send color state
-            ofxOscMessage m;
-            ofColor tempColor = lockers[i][j]->getColor();
-//            ofLog() << "row " << ofToString(i) << " col " << ofToString(j) << endl;
-            
-            if(i == 1){
-                lockers[i][j]->setIP("192.168.0.82");
-                sender.setup(lockers[i][j]->ipAddress, 9998);
-                m.setAddress("/led");
-                m.addIntArg(j);
-                m.addIntArg(tempColor.r);
-                m.addIntArg(tempColor.g);
-                m.addIntArg(tempColor.b);
-                sender.sendMessage(m);
-            }
-            
-            else {
-                sender.setup(lockers[i][j]->ipAddress, PORT);
-                m.setAddress("/led");
-                m.addIntArg(84);
-                m.addIntArg(tempColor.r);
-                m.addIntArg(tempColor.g);
-                m.addIntArg(tempColor.b);
-                sender.sendMessage(m);
-            }
-            
-            
-            
-            
-            // final
-            /*
-            ofxOscMessage m;
             ofColor tempColor = lockers[i][j]->getColor();
             //            ofLog() << "row " << ofToString(i) << " col " << ofToString(j) << endl;
-            sender.setup(lockers[i][j]->ipAddress, PORT);
-            m.setAddress("/" + ofToString(j));
+            
+//            sender.setup(lockers[i][j]->ipAddress, PORT);
+            
+//            m.addIntArg(j);
             m.addIntArg(tempColor.r);
             m.addIntArg(tempColor.g);
             m.addIntArg(tempColor.b);
-            sender.sendMessage(m);
-        
-             */
+           
         }
+        
+        sender.sendMessage(m);
     }
 }

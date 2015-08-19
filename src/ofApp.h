@@ -6,7 +6,7 @@
 #include "ofxOpenCv.h"
 
 #define HOST "localhost"
-#define PORT 9997
+#define PORT 9998
 #define LISTEN_PORT 9998
 
 
@@ -54,7 +54,7 @@ class ofApp : public ofBaseApp{
         int numColumns;
     
         // pi vars
-        string piIPAddresses[17] = {"192.168.0.100", "192.168.0.101", "192.168.0.102", "192.168.0.103", "192.168.0.104", "192.168.0.105", "192.168.0.106", "192.168.0.107", "192.168.0.108", "192.168.0.109", "192.168.0.110", "192.168.0.111", "192.168.0.112", "192.168.0.113", "192.168.0.114", "192.168.0.115", "192.168.0.116"};
+        string piIPAddresses[17] = {"192.168.1.100", "192.168.1.101", "192.168.1.102", "192.168.1.103", "192.168.1.104", "192.168.1.105", "192.168.1.106", "192.168.1.107", "192.168.1.108", "192.168.1.109", "192.168.1.110", "192.168.1.111", "192.168.1.112", "192.168.1.113", "192.168.1.114", "192.168.1.115", "192.168.1.116"};
         string doubleLockers[4][4];
     
         // display variables
@@ -72,6 +72,7 @@ class ofApp : public ofBaseApp{
         // Chase colors
         ofColor CGreen;
         ofColor COrange;
+        ofColor CYellow;
     
         // display vars
         int marginX;
