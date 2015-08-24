@@ -66,6 +66,11 @@ class ofApp : public ofBaseApp{
         int checkInDuration;
         int pickUpDuration;
         long long stateChangeMillis;
+        int playlistDuration[8] = {30000, 30000, 30000, 30000, 30000, 30000, 3000, 30000};
+        int playlistState[8] = {3, 4, 3, 4, 3, 4, 3, 4 };
+        int playlistIndex;
+        int playlistLength;
+        int frameRate;
     
         vector< vector < Locker* > > lockers;
         vector< ofPoint > unlocked;

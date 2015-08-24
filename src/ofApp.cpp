@@ -26,13 +26,11 @@ void ofApp::setup(){
     checkInDuration = 45000;
     pickUpDuration = 45000;
     
-    string tempIPs[] = {"192.168.0.121", "192.168.0.153", "192.168.0.107", "192.168.0.104", "192.168.0.180"};
     
-    // temp initialize lockers
+    // initialize lockers
     for(int col_i = 0 ; col_i < numColumns ; ++col_i){
         vector<Locker* > tempLockerCol;
         for(int row_i = 0; row_i < numRows; ++row_i){
-//            Locker* tempLocker = new Locker(col_i, row_i, "192.168.0.126");
             Locker* tempLocker = new Locker(col_i, row_i, piIPAddresses[col_i]);
             tempLockerCol.push_back(tempLocker);
         }
@@ -47,7 +45,7 @@ void ofApp::setup(){
         }
     }
     
-    sourceVid.loadMovie("movies/fingers.mov");
+    sourceVid.loadMovie("movies/CHASE_OPEN_17x9_ball1_v5.mov");
     sourceVid.play();
 //    vidOriginX = sourceVid.getWidth();
     
@@ -65,9 +63,15 @@ void ofApp::setup(){
     // initalize receiver
     receiver.setup(LISTEN_PORT);
     
+    // initialize timer
+    stateChangeMillis = ofGetSystemTime();
+    playlistIndex = 0;
+    playlistLength = 8;
+    frameRate = 30;
+    
     ofSetColor(255,255,255);
     ofBackground(0,0,0);
-    ofSetFrameRate(30);
+    ofSetFrameRate(frameRate);
 }
 
 //--------------------------------------------------------------
@@ -83,10 +87,12 @@ void ofApp::update(){
         
     }
     else {
-        int switcher = currentTime % 10000; // change every 100 seconds
-        if(switcher < 100){
-            ++dispState;
-            dispState = dispState % numStates;
+        long long currentTime = ofGetSystemTime();
+        if( currentTime - stateChangeMillis  > playlistDuration[playlistIndex] ){
+            ++playlistIndex;
+            playlistIndex = playlistIndex % playlistLength;
+            dispState = playlistState[playlistIndex];
+            stateChangeMillis = currentTime;
         }
     }
     
@@ -306,16 +312,17 @@ void ofApp::concentrics(int _x, int _y) {
     
     long long currentTime = ofGetSystemTime();
     
+    int gradients = 24;
     ofColor colors[24] = {ofColor(1, 121, 192) , ofColor(31, 138, 201) , ofColor(62, 155, 210) , ofColor(93, 172, 219) , ofColor(123, 189, 228) , ofColor(152, 206, 237) , ofColor(185, 224, 247) , ofColor(152, 196, 247) , ofColor(123, 168, 248) , ofColor(92, 140, 248) , ofColor(61, 112, 249) , ofColor(30, 84, 249) , ofColor(0, 57, 250) , ofColor(0, 58, 224) , ofColor(0, 59, 198) , ofColor(0, 61, 172) , ofColor(0, 62, 146) , ofColor(0, 62, 120) , ofColor(0, 65, 94) , ofColor(0, 74, 110) , ofColor(0, 83, 126) , ofColor(0, 93, 143) , ofColor(0, 102, 159) , ofColor(0, 111, 175)};
     
 //    ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
     
-    
-    int switcher = (currentTime/2 % 12000) / 400;
+    int duration = 120;
+    int switcher = (currentTime % (duration*gradients)) / duration;
     
     for(int i = 0; i < lockers.size(); ++i) {
         for(int j = 0; j < lockers[i].size(); ++j){
-            lockers[i][j]->setColor(colors[(abs(i - _x) + abs(j - _y) + 50 - switcher) % 24]);
+            lockers[i][j]->setColor(colors[(abs(i - _x) + abs(j - _y) + gradients - switcher) % gradients]);
 //            if( ((abs(i - _x) +abs(j - _y) + switcher) % 2 == 0)){
 //                lockers[i][j]->setColor(ofColor(255,255,255));
 //            }
@@ -361,13 +368,13 @@ void ofApp::randomSet(){
     
     ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
     
-    int switcher = (currentTime % 500);
+    int switcher = (currentTime % (frameRate * 30));
     
     ofLog() << "switcher is: " << ofToString(switcher) << endl;
     
     for(int i = 0; i < lockers.size(); ++i) {
         for(int j = 0; j < lockers[i].size(); ++j){
-            if(switcher   <  25){
+            if(switcher < frameRate){
                 lockers[i][j]->setColor(colors[(rand())%4]);
             }
             
