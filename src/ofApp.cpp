@@ -6,10 +6,11 @@ void ofApp::setup(){
     numRows = 9;
     numColumns = 17;
     dispState = 2;
+    numStates = 7;
     
     // Chase colors
-    CGreen = ofColor(120, 190, 32);
-    COrange = ofColor(199, 108, 61);
+    CGreen = ofColor(70, 255, 32);
+    COrange = ofColor(255, 69, 10);
     CYellow = ofColor(255, 218, 0);
     
     // display vars mockup
@@ -88,7 +89,7 @@ void ofApp::setup(){
     
     ofSetColor(255,255,255);
     ofBackground(0,0,0);
-    ofSetFrameRate(10);
+    ofSetFrameRate(24);
 }
 
 //--------------------------------------------------------------
@@ -107,7 +108,7 @@ void ofApp::update(){
         int switcher = currentTime % 10000; // change every 100 seconds
         if(switcher < 100){
             ++dispState;
-            dispState = dispState % 6;
+            dispState = dispState % numStates;
         }
     }
     
@@ -129,6 +130,9 @@ void ofApp::update(){
             break;
         case 5:
             randomSet();
+            break;
+        case 6:
+            randGradientColumn();
             break;
     }
     
@@ -169,11 +173,11 @@ void ofApp::keyPressed(int key){
         case OF_KEY_LEFT:
             dispState = dispState - 1;
             if (dispState < 0){
-                dispState = 5;
+                dispState = numStates - 1;
             }
             break;
         case OF_KEY_RIGHT:
-            dispState = (dispState + 1) % 6;
+            dispState = (dispState + 1) % numStates;
             break;
             
         case 'm':
@@ -306,7 +310,7 @@ void ofApp::colorSweep() {
     
     long long currentTime = ofGetSystemTime();
     
-    int switcher = (currentTime % 2550) / 10;
+    int switcher = (currentTime/2 % 2550) / 10;
     
     // does a color wheel
     for(int i = 0; i < lockers.size(); ++i){
@@ -323,14 +327,16 @@ void ofApp::concentrics(int _x, int _y) {
     
     long long currentTime = ofGetSystemTime();
     
-    ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
+    ofColor colors[24] = {ofColor(1, 121, 192) , ofColor(31, 138, 201) , ofColor(62, 155, 210) , ofColor(93, 172, 219) , ofColor(123, 189, 228) , ofColor(152, 206, 237) , ofColor(185, 224, 247) , ofColor(152, 196, 247) , ofColor(123, 168, 248) , ofColor(92, 140, 248) , ofColor(61, 112, 249) , ofColor(30, 84, 249) , ofColor(0, 57, 250) , ofColor(0, 58, 224) , ofColor(0, 59, 198) , ofColor(0, 61, 172) , ofColor(0, 62, 146) , ofColor(0, 62, 120) , ofColor(0, 65, 94) , ofColor(0, 74, 110) , ofColor(0, 83, 126) , ofColor(0, 93, 143) , ofColor(0, 102, 159) , ofColor(0, 111, 175)};
+    
+//    ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
     
     
-    int switcher = (currentTime % 10000) / 200;
+    int switcher = (currentTime/2 % 12000) / 400;
     
     for(int i = 0; i < lockers.size(); ++i) {
         for(int j = 0; j < lockers[i].size(); ++j){
-            lockers[i][j]->setColor(colors[(abs(i - _x) + abs(j - _y) + 50 - switcher) % 4]);
+            lockers[i][j]->setColor(colors[(abs(i - _x) + abs(j - _y) + 50 - switcher) % 24]);
 //            if( ((abs(i - _x) +abs(j - _y) + switcher) % 2 == 0)){
 //                lockers[i][j]->setColor(ofColor(255,255,255));
 //            }
@@ -350,9 +356,11 @@ void ofApp::colorStripes() {
     
     long long currentTime = ofGetSystemTime();
     
-    ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
+//    ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
     
-    int switcher = (currentTime % 10000) / 200;
+    ofColor colors[24] = {ofColor(1, 121, 192) , ofColor(31, 138, 201) , ofColor(62, 155, 210) , ofColor(93, 172, 219) , ofColor(123, 189, 228) , ofColor(152, 206, 237) , ofColor(185, 224, 247) , ofColor(152, 196, 247) , ofColor(123, 168, 248) , ofColor(92, 140, 248) , ofColor(61, 112, 249) , ofColor(30, 84, 249) , ofColor(0, 57, 250) , ofColor(0, 58, 224) , ofColor(0, 59, 198) , ofColor(0, 61, 172) , ofColor(0, 62, 146) , ofColor(0, 62, 120) , ofColor(0, 65, 94) , ofColor(0, 74, 110) , ofColor(0, 83, 126) , ofColor(0, 93, 143) , ofColor(0, 102, 159) , ofColor(0, 111, 175)};
+    
+    int switcher = (currentTime % 12000) / 100;
     
     // horizontal sweep
     //    for(int i = 0; i < lockers.size(); ++i) {
@@ -364,7 +372,7 @@ void ofApp::colorStripes() {
     // vertical sweep
     for(int i = 0; i < lockers.size(); ++i) {
         for(int j = 0; j < lockers[i].size(); ++j){
-            lockers[i][j]->setColor(colors[(lockers[i].size() - j + switcher)%4]);
+            lockers[i][j]->setColor(colors[(lockers[i].size() - j + switcher)%24]);
         }
     }
 }
@@ -374,16 +382,31 @@ void ofApp::randomSet(){
     
     ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
     
-    int switcher = (currentTime % 300);
+    int switcher = (currentTime % 200);
     
     ofLog() << "switcher is: " << ofToString(switcher) << endl;
     
     for(int i = 0; i < lockers.size(); ++i) {
         for(int j = 0; j < lockers[i].size(); ++j){
-            if(switcher   >  200){
+            if(switcher   >  100){
                 lockers[i][j]->setColor(colors[(rand())%4]);
             }
             
+        }
+    }
+}
+
+void ofApp::randGradientColumn() {
+    long long currentTime = ofGetSystemTime();
+    
+    ofColor colors[24] = {ofColor(1, 121, 192) , ofColor(31, 138, 201) , ofColor(62, 155, 210) , ofColor(93, 172, 219) , ofColor(123, 189, 228) , ofColor(152, 206, 237) , ofColor(185, 224, 247) , ofColor(152, 196, 247) , ofColor(123, 168, 248) , ofColor(92, 140, 248) , ofColor(61, 112, 249) , ofColor(30, 84, 249) , ofColor(0, 57, 250) , ofColor(0, 58, 224) , ofColor(0, 59, 198) , ofColor(0, 61, 172) , ofColor(0, 62, 146) , ofColor(0, 62, 120) , ofColor(0, 65, 94) , ofColor(0, 74, 110) , ofColor(0, 83, 126) , ofColor(0, 93, 143) , ofColor(0, 102, 159) , ofColor(0, 111, 175)};
+    
+    int switcher = (currentTime % 10000) / 100;
+    
+    for(int i = 0; i < lockers.size(); ++i) {
+        ofColor randSelect = colors[rand() % 24];
+        for(int j = 0; j < lockers[i].size(); ++j){
+            lockers[i][j]->setColor(randSelect);
         }
     }
 }
@@ -410,10 +433,10 @@ void ofApp::displayOpen() {
             
             if(lockers[i][j]->currentState == 1){
                 
-                ofLog() << "currentTime " << ofToString(currentTime) << ", lockmillis " << ofToString(lockers[i][j]->lockMillis) << " and the difference is " << ofToString(currentTime - lockers[i][j]->lockMillis) << endl;
+//                ofLog() << "currentTime " << ofToString(currentTime) << ", lockmillis " << ofToString(lockers[i][j]->lockMillis) << " and the difference is " << ofToString(currentTime - lockers[i][j]->lockMillis) << endl;
                 if(currentTime - lockers[i][j]->lockMillis > checkInDuration){
                     
-                    ofLog() << "locker " << ofToString(i) << ", " << ofToString(j) << " is now closing" << endl;
+//                    ofLog() << "locker " << ofToString(i) << ", " << ofToString(j) << " is now closing" << endl;
                     lockers[i][j]->currentState = 0;
                     ofxOscMessage lock;
                     sender.setup(lockers[i][j]->ipAddress, PORT);
@@ -428,7 +451,8 @@ void ofApp::displayOpen() {
                     int switcher = (currentTime % 500);
                     
                     if (switcher > 250) {
-                        tempColor = ofColor(1,121,193);
+
+//                        tempColor = CGreen;
                         switch(lockers[i][j]->deviceID){
                             case 0:
                                 tempColor = CGreen;
@@ -447,7 +471,7 @@ void ofApp::displayOpen() {
                         tempColor = ofColor(185, 224, 247);
                     }
                     
-                    ofLog() << "locker " << ofToString(i) << ", " << ofToString(j) << " is open" << endl;
+//                    ofLog() << "locker " << ofToString(i) << ", " << ofToString(j) << " is open" << endl;
                     lockers[i][j]->setColor(tempColor);
                     
                     ofxOscMessage lock;
@@ -475,7 +499,7 @@ void ofApp::processMessages() {
         int state = m.getArgAsInt32(2);
         int deviceID = m.getArgAsInt32(3);
         
-        ofLog() << "message with address: " << m.getAddress() << " " << m.getArgAsInt32(0) << " " << m.getArgAsInt32(1) << " " << m.getArgAsInt32(2) << " " << m.getArgAsInt32(3) << endl;
+        ofLog() << "message with address: " << m.getAddress() << " " << m.getArgAsInt32(0) << " " << m.getArgAsInt32(1) << " " << m.getArgAsInt32(2) << " " << m.getArgAsString(3) << endl;
         
 //        int row = m.getArgAsInt32(0);
 //        int col = m.getArgAsInt32(1);
@@ -485,9 +509,19 @@ void ofApp::processMessages() {
 //        col = 0;
 //        if(state == 1){
         
-            lockers[col][row]->lockMillis = ofGetSystemTime();
-            lockers[col][row]->currentState = 1;
-            lockers[col][row]->deviceID = deviceID;
+        lockers[col][row]->lockMillis = ofGetSystemTime();
+        lockers[col][row]->currentState = 1;
+        lockers[col][row]->deviceID = deviceID;
+        
+        // special conditions
+        if(col == 0){
+            if(row == 0 || row == 2 || row == 4 || row == 6){
+                lockers[col+1][row]->lockMillis = ofGetSystemTime();
+                lockers[col+1][row]->currentState = 1;
+                lockers[col+1][row]->deviceID = deviceID;
+            }
+        }
+        
 //        }
         
     }

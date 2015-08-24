@@ -42,6 +42,7 @@ class ofApp : public ofBaseApp{
         void mosaic();
         void colorStripes();
         void randomSet();
+        void randGradientColumn();
     
         ofColor wheel(int WheelPos);
     
@@ -59,6 +60,7 @@ class ofApp : public ofBaseApp{
     
         // display variables
         int dispState;
+        int numStates;
         bool manualSwitch;
         int checkInDuration;
         int pickUpDuration;

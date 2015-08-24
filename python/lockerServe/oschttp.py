@@ -66,7 +66,7 @@ def message_time():
     oscmsg.append(request.json['row'])
     oscmsg.append(request.json['col'])
     oscmsg.append(request.json['state'])
-    oscmsg.append(request.json['device_id'])
+    oscmsg.append(int(request.json['device_id']))
     c.send(oscmsg)
 
     print "sent OSC message at: " + str(datetime.datetime.now())
