@@ -45,6 +45,7 @@ class ofApp : public ofBaseApp{
         void randGradientColumn();
     
         ofColor wheel(int WheelPos);
+    ofColor gbWheel(int WheelPos);
     
         void displayOpen();
     

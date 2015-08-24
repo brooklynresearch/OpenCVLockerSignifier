@@ -35,32 +35,10 @@ void ofApp::setup(){
 //            Locker* tempLocker = new Locker(col_i, row_i, "192.168.0.126");
             Locker* tempLocker = new Locker(col_i, row_i, piIPAddresses[col_i]);
             tempLockerCol.push_back(tempLocker);
-
-            
-//            if(col_i == 0 && row_i < 5){
-//                tempLocker->setIP(tempIPs[row_i]);
-//            }
-//            else if(col_i == 1 && row_i == 0){
-//                tempLocker->setIP("192.168.0.82");
-//            }
-//            else {
-//                tempLocker->setIP("192.168.0.144");
-//            }
         }
         
         lockers.push_back(tempLockerCol);
     }
-    
-    // final lockers
-//    for(int col_i = 0 ; col_i < numColumns ; ++col_i){
-//        vector<Locker* > tempLockerCol;
-//        for(int row_i = 0; row_i < numRows; ++row_i){
-//            Locker* tempLocker = new Locker(col_i, row_i, piIPAddresses[numColumns]);
-//            tempLockerCol.push_back(tempLocker);
-//        }
-//        
-//        lockers.push_back(tempLockerCol);
-//    }
     
 
     for(int i = 0; i < lockers.size(); ++i){
@@ -89,7 +67,7 @@ void ofApp::setup(){
     
     ofSetColor(255,255,255);
     ofBackground(0,0,0);
-    ofSetFrameRate(24);
+    ofSetFrameRate(30);
 }
 
 //--------------------------------------------------------------
@@ -316,7 +294,8 @@ void ofApp::colorSweep() {
     for(int i = 0; i < lockers.size(); ++i){
         for(int j = 0; j < lockers[i].size(); ++j){
             
-            lockers[i][j]->setColor(wheel((j*lockers.size()+i+switcher)%255));
+            lockers[i][j]->setColor(gbWheel((j*lockers.size()+i+switcher)%255));
+//            lockers[i][j]->setColor(wheel((j*lockers.size()+i+switcher)%255));
 //            lockers[i][j]->setColor(wheel((switcher)%255));
 //            lockers[i][j]->setColor(lockers[0][0]->getColor());
         }
@@ -382,13 +361,13 @@ void ofApp::randomSet(){
     
     ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
     
-    int switcher = (currentTime % 200);
+    int switcher = (currentTime % 500);
     
     ofLog() << "switcher is: " << ofToString(switcher) << endl;
     
     for(int i = 0; i < lockers.size(); ++i) {
         for(int j = 0; j < lockers[i].size(); ++j){
-            if(switcher   >  100){
+            if(switcher   <  25){
                 lockers[i][j]->setColor(colors[(rand())%4]);
             }
             
@@ -401,12 +380,14 @@ void ofApp::randGradientColumn() {
     
     ofColor colors[24] = {ofColor(1, 121, 192) , ofColor(31, 138, 201) , ofColor(62, 155, 210) , ofColor(93, 172, 219) , ofColor(123, 189, 228) , ofColor(152, 206, 237) , ofColor(185, 224, 247) , ofColor(152, 196, 247) , ofColor(123, 168, 248) , ofColor(92, 140, 248) , ofColor(61, 112, 249) , ofColor(30, 84, 249) , ofColor(0, 57, 250) , ofColor(0, 58, 224) , ofColor(0, 59, 198) , ofColor(0, 61, 172) , ofColor(0, 62, 146) , ofColor(0, 62, 120) , ofColor(0, 65, 94) , ofColor(0, 74, 110) , ofColor(0, 83, 126) , ofColor(0, 93, 143) , ofColor(0, 102, 159) , ofColor(0, 111, 175)};
     
-    int switcher = (currentTime % 10000) / 100;
+    int switcher = (currentTime % 500);
     
-    for(int i = 0; i < lockers.size(); ++i) {
-        ofColor randSelect = colors[rand() % 24];
-        for(int j = 0; j < lockers[i].size(); ++j){
-            lockers[i][j]->setColor(randSelect);
+    if(switcher < 25){
+        for(int i = 0; i < lockers.size(); ++i) {
+            ofColor randSelect = colors[rand() % 24];
+            for(int j = 0; j < lockers[i].size(); ++j){
+                lockers[i][j]->setColor(randSelect);
+            }
         }
     }
 }
@@ -422,6 +403,16 @@ ofColor ofApp::wheel(int WheelPos) {
     }
     WheelPos -= 170;
     return ofColor(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
+
+ofColor ofApp::gbWheel(int WheelPos){
+    if(WheelPos > 127){
+        WheelPos = 255 - WheelPos;
+        return ofColor(0, WheelPos*2, 255 - WheelPos*2);
+    }
+    return ofColor(0, WheelPos*2, 255 - WheelPos*2);
+    
+    
 }
 
 void ofApp::displayOpen() {
