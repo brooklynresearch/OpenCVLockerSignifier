@@ -66,8 +66,8 @@ class ofApp : public ofBaseApp{
         int checkInDuration;
         int pickUpDuration;
         long long stateChangeMillis;
-        int playlistDuration[8] = {30000, 30000, 30000, 30000, 30000, 30000, 3000, 30000};
-        int playlistState[8] = {3, 4, 3, 4, 3, 4, 3, 4 };
+        int playlistDuration[10] = {30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000};
+        int playlistState[10] = {2, 4, 2, 3, 2, 6, 2, 5, 2, 1};
         int playlistIndex;
         int playlistLength;
         int frameRate;

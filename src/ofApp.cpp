@@ -66,7 +66,7 @@ void ofApp::setup(){
     // initialize timer
     stateChangeMillis = ofGetSystemTime();
     playlistIndex = 0;
-    playlistLength = 8;
+    playlistLength = 10;
     frameRate = 30;
     
     ofSetColor(255,255,255);
