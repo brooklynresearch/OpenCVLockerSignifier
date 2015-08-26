@@ -73,7 +73,7 @@ class ofApp : public ofBaseApp{
         int playlistLength;
         int frameRate;
     
-        string videoNames[3] = {"movies/CHASE OPEN_17x9_ball bounce_v2.mov", "movies/CHASE_OPEN_17x9_ball1_v7.mov", "movies/CHASE_USOPEN_TENNIS COURT_v2.mov" };
+        string videoNames[4] = {"movies/CHASE OPEN_17x9_ball bounce_v2.mov", "movies/CHASE_OPEN_17x9_ball1_v7.mov", "movies/CHASE_OPEN_17x9_PONG.mov", "movies/CHASE_USOPEN_TENNIS COURT_v2.mov" };
     
         long long randPrevTime;
         int randInterval;
