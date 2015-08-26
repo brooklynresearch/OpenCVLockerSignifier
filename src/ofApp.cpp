@@ -45,7 +45,7 @@ void ofApp::setup(){
         }
     }
     
-    sourceVid.loadMovie("movies/CHASE_OPEN_17x9_ball1_v5.mov");
+    sourceVid.loadMovie("movies/CHASE_OPEN_17x9_ball1_v7.mov");
     sourceVid.play();
 //    vidOriginX = sourceVid.getWidth();
     
