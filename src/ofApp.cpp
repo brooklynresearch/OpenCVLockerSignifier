@@ -6,7 +6,7 @@ void ofApp::setup(){
     numRows = 9;
     numColumns = 17;
     dispState = 2;
-    numStates = 7;
+    numStates = 8;
     
     // Chase colors
     CGreen = ofColor(70, 255, 32);
