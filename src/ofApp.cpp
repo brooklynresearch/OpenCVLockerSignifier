@@ -339,9 +339,17 @@ void ofApp::concentrics(int _x, int _y) {
     
     long long currentTime = ofGetSystemTime();
     
-    int gradients = 24;
-    ofColor colors[24] = {ofColor(1, 121, 192) , ofColor(31, 138, 201) , ofColor(62, 155, 210) , ofColor(93, 172, 219) , ofColor(123, 189, 228) , ofColor(152, 206, 237) , ofColor(185, 224, 247) , ofColor(152, 196, 247) , ofColor(123, 168, 248) , ofColor(92, 140, 248) , ofColor(61, 112, 249) , ofColor(30, 84, 249) , ofColor(0, 57, 250) , ofColor(0, 58, 224) , ofColor(0, 59, 198) , ofColor(0, 61, 172) , ofColor(0, 62, 146) , ofColor(0, 62, 120) , ofColor(0, 65, 94) , ofColor(0, 74, 110) , ofColor(0, 83, 126) , ofColor(0, 93, 143) , ofColor(0, 102, 159) , ofColor(0, 111, 175)};
+    int gradients = 80;
+//    ofColor colors[24] = {ofColor(1, 121, 192) , ofColor(31, 138, 201) , ofColor(62, 155, 210) , ofColor(93, 172, 219) , ofColor(123, 189, 228) , ofColor(152, 206, 237) , ofColor(185, 224, 247) , ofColor(152, 196, 247) , ofColor(123, 168, 248) , ofColor(92, 140, 248) , ofColor(61, 112, 249) , ofColor(30, 84, 249) , ofColor(0, 57, 250) , ofColor(0, 58, 224) , ofColor(0, 59, 198) , ofColor(0, 61, 172) , ofColor(0, 62, 146) , ofColor(0, 62, 120) , ofColor(0, 65, 94) , ofColor(0, 74, 110) , ofColor(0, 83, 126) , ofColor(0, 93, 143) , ofColor(0, 102, 159) , ofColor(0, 111, 175)};
     
+    ofColor colors[80] = {ofColor(1, 121, 192), ofColor(10, 126, 192), ofColor(19, 131, 192), ofColor(28, 136, 200), ofColor(37, 141, 203), ofColor(47, 146, 205), ofColor(56, 151, 208), ofColor(65, 157, 211), ofColor(74, 162, 214), ofColor(83, 167, 216), ofColor(93, 172, 219), ofColor(102, 177, 222), ofColor(111, 182, 225), ofColor(120, 187, 227), ofColor(129, 193, 230), ofColor(139, 198, 233), ofColor(148, 203, 236), ofColor(157, 208, 238), ofColor(166, 213, 241), ofColor(175, 218, 244),
+        
+        ofColor(185, 224, 247), ofColor(175, 215, 247), ofColor(166, 207, 247), ofColor(157, 198, 247), ofColor(148, 190, 247), ofColor(138, 182, 247), ofColor(129, 173, 247), ofColor(120, 165, 248), ofColor(111, 157, 248), ofColor(101, 148, 248), ofColor(92, 140, 248), ofColor(83, 132, 248), ofColor(74, 123, 248), ofColor(64, 115, 248), ofColor(55, 107, 249), ofColor(46, 98, 249), ofColor(37, 90, 249), ofColor(27, 82, 249), ofColor(18, 73, 249), ofColor(9, 65, 249),
+        
+        ofColor(0, 57, 250), ofColor(0, 57, 242), ofColor(0, 57, 234), ofColor(0, 58, 226), ofColor(0, 58, 218), ofColor(0, 59, 211), ofColor(0, 59, 203), ofColor(0, 59, 195), ofColor(0, 60, 187), ofColor(0, 60, 179), ofColor(0, 61, 172), ofColor(0, 61, 164), ofColor(0, 61, 156), ofColor(0, 62, 148), ofColor(0, 62, 140), ofColor(0, 63, 133), ofColor(0, 63, 125), ofColor(0, 63, 117), ofColor(0, 64, 109), ofColor(0, 64, 101),
+        
+        ofColor(0, 65, 94), ofColor(0, 67, 98), ofColor(0, 70, 103), ofColor(0, 73, 108), ofColor(0, 76, 113), ofColor(0, 79, 118), ofColor(0, 81, 123), ofColor(0, 84, 128), ofColor(0, 87, 133), ofColor(0, 90, 138), ofColor(0, 93, 143), ofColor(0, 95, 147), ofColor(0, 98, 152), ofColor(0, 101, 157), ofColor(0, 104, 162), ofColor(0, 107, 167), ofColor(0, 109, 172), ofColor(0, 112, 177), ofColor(0, 115, 182), ofColor(0, 118, 187)
+    };
 //    ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
     
     int duration = 120;
