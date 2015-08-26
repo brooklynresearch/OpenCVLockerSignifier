@@ -33,6 +33,7 @@ class ofApp : public ofBaseApp{
     
         void setupVid();
         void updateVid();
+        void updateVid(int vidIndex);
         void drawVid();
     
         void pixellate(ofImage tempImg);
@@ -74,6 +75,8 @@ class ofApp : public ofBaseApp{
         int frameRate;
     
         string videoNames[4] = {"movies/CHASE OPEN_17x9_ball bounce_v2.mov", "movies/CHASE_OPEN_17x9_ball1_v7.mov", "movies/CHASE_OPEN_17x9_PONG.mov", "movies/CHASE_USOPEN_TENNIS COURT_v2.mov" };
+    
+        vector< ofVideoPlayer > sourceVids;
     
         long long randPrevTime;
         int randInterval;

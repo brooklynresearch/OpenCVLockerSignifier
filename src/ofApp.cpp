@@ -6,7 +6,7 @@ void ofApp::setup(){
     numRows = 9;
     numColumns = 17;
     dispState = 2;
-    numStates = 8;
+    numStates = 12;
     
     // Chase colors
     CGreen = ofColor(70, 255, 32);
@@ -48,6 +48,13 @@ void ofApp::setup(){
     sourceVid.loadMovie("movies/CHASE_OPEN_17x9_ball1_v7.mov");
     sourceVid.play();
 //    vidOriginX = sourceVid.getWidth();
+    
+    // video array
+    sourceVids.resize(4);
+    for(int i = 0; i < 4 ; ++i){
+        sourceVids[i].loadMovie(videoNames[i]);
+        sourceVids[i].play();
+    }
     
     // camera feed
     sourceCam.setDeviceID(0);
@@ -126,6 +133,18 @@ void ofApp::update(){
             break;
         case 7:
             colorSweep();
+            break;
+        case 8:
+            updateVid(0);
+            break;
+        case 9:
+            updateVid(1);
+            break;
+        case 10:
+            updateVid(2);
+            break;
+        case 11:
+            updateVid(3);
             break;
     }
     
@@ -263,6 +282,15 @@ void ofApp::updateVid() {
     ofImage tempImg;
     
     tempImg.setFromPixels(sourceVid.getPixelsRef());
+    pixellate(tempImg);
+}
+
+void ofApp::updateVid(int vidIndex) {
+    
+    sourceVids[vidIndex].update();
+    ofImage tempImg;
+    
+    tempImg.setFromPixels(sourceVids[vidIndex].getPixelsRef());
     pixellate(tempImg);
 }
 
