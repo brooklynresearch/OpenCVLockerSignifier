@@ -38,6 +38,7 @@ class ofApp : public ofBaseApp{
         void pixellate(ofImage tempImg);
     
         void colorSweep();
+        void gbGradient();
         void concentrics(int _x, int _y);
         void mosaic();
         void colorStripes();
@@ -45,7 +46,7 @@ class ofApp : public ofBaseApp{
         void randGradientColumn();
     
         ofColor wheel(int WheelPos);
-    ofColor gbWheel(int WheelPos);
+        ofColor gbWheel(int WheelPos);
     
         void displayOpen();
     
@@ -71,6 +72,12 @@ class ofApp : public ofBaseApp{
         int playlistIndex;
         int playlistLength;
         int frameRate;
+    
+        long long randPrevTime;
+        int randInterval;
+    
+        long long renoPrevTime;
+        int renoInterval;
     
         vector< vector < Locker* > > lockers;
         vector< ofPoint > unlocked;

@@ -20,7 +20,7 @@ void ofApp::setup(){
     dispHeight = 90;
     vidOriginX = 10;
     vidOriginY = 10;
-    manualSwitch = true;
+    manualSwitch = false;
     
     // lock time variables
     checkInDuration = 45000;
@@ -69,6 +69,12 @@ void ofApp::setup(){
     playlistLength = 10;
     frameRate = 30;
     
+    randPrevTime = stateChangeMillis;
+    renoPrevTime = stateChangeMillis;
+    
+    randInterval = 700;
+    renoInterval = 700;
+    
     ofSetColor(255,255,255);
     ofBackground(0,0,0);
     ofSetFrameRate(frameRate);
@@ -104,7 +110,7 @@ void ofApp::update(){
             updateVid();
             break;
         case 2:
-            colorSweep();
+            gbGradient();
             break;
         case 3:
             concentrics(8, 4);
@@ -117,6 +123,9 @@ void ofApp::update(){
             break;
         case 6:
             randGradientColumn();
+            break;
+        case 7:
+            colorSweep();
             break;
     }
     
@@ -300,10 +309,28 @@ void ofApp::colorSweep() {
     for(int i = 0; i < lockers.size(); ++i){
         for(int j = 0; j < lockers[i].size(); ++j){
             
-            lockers[i][j]->setColor(gbWheel((j*lockers.size()+i+switcher)%255));
-//            lockers[i][j]->setColor(wheel((j*lockers.size()+i+switcher)%255));
+//            lockers[i][j]->setColor(gbWheel((j*lockers.size()+i+switcher)%255));
+            lockers[i][j]->setColor(wheel((j*lockers.size()+i+switcher)%255));
 //            lockers[i][j]->setColor(wheel((switcher)%255));
 //            lockers[i][j]->setColor(lockers[0][0]->getColor());
+        }
+    }
+}
+
+void ofApp::gbGradient() {
+    
+    long long currentTime = ofGetSystemTime();
+    
+    int switcher = (currentTime/2 % 2550) / 10;
+    
+    // does a color wheel
+    for(int i = 0; i < lockers.size(); ++i){
+        for(int j = 0; j < lockers[i].size(); ++j){
+            
+            lockers[i][j]->setColor(gbWheel((j*lockers.size()+i+switcher)%255));
+            //            lockers[i][j]->setColor(wheel((j*lockers.size()+i+switcher)%255));
+            //            lockers[i][j]->setColor(wheel((switcher)%255));
+            //            lockers[i][j]->setColor(lockers[0][0]->getColor());
         }
     }
 }
@@ -368,17 +395,15 @@ void ofApp::randomSet(){
     
     ofColor colors[4] = {ofColor(1,121,193), ofColor(185, 224, 247), ofColor(0,57,250), ofColor(0, 65, 94)};
     
-    int switcher = (currentTime % (frameRate * 30));
+    if(currentTime - randPrevTime > randInterval){
     
-    ofLog() << "switcher is: " << ofToString(switcher) << endl;
-    
-    for(int i = 0; i < lockers.size(); ++i) {
-        for(int j = 0; j < lockers[i].size(); ++j){
-            if(switcher < frameRate){
+        for(int i = 0; i < lockers.size(); ++i) {
+            for(int j = 0; j < lockers[i].size(); ++j){
                 lockers[i][j]->setColor(colors[(rand())%4]);
             }
-            
         }
+        
+        randPrevTime = currentTime;
     }
 }
 
@@ -387,15 +412,14 @@ void ofApp::randGradientColumn() {
     
     ofColor colors[24] = {ofColor(1, 121, 192) , ofColor(31, 138, 201) , ofColor(62, 155, 210) , ofColor(93, 172, 219) , ofColor(123, 189, 228) , ofColor(152, 206, 237) , ofColor(185, 224, 247) , ofColor(152, 196, 247) , ofColor(123, 168, 248) , ofColor(92, 140, 248) , ofColor(61, 112, 249) , ofColor(30, 84, 249) , ofColor(0, 57, 250) , ofColor(0, 58, 224) , ofColor(0, 59, 198) , ofColor(0, 61, 172) , ofColor(0, 62, 146) , ofColor(0, 62, 120) , ofColor(0, 65, 94) , ofColor(0, 74, 110) , ofColor(0, 83, 126) , ofColor(0, 93, 143) , ofColor(0, 102, 159) , ofColor(0, 111, 175)};
     
-    int switcher = (currentTime % 500);
-    
-    if(switcher < 25){
+    if(currentTime - renoPrevTime > renoInterval){
         for(int i = 0; i < lockers.size(); ++i) {
             ofColor randSelect = colors[rand() % 24];
             for(int j = 0; j < lockers[i].size(); ++j){
                 lockers[i][j]->setColor(randSelect);
             }
         }
+        renoPrevTime = currentTime;
     }
 }
 
