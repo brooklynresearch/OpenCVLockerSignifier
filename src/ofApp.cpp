@@ -23,8 +23,8 @@ void ofApp::setup(){
     manualSwitch = false;
     
     // lock time variables
-    checkInDuration = 45000;
-    pickUpDuration = 45000;
+    checkInDuration = 30000;
+    pickUpDuration = 30000;
     
     
     // initialize lockers

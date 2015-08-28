@@ -8,7 +8,7 @@ from flask import Flask, Response, jsonify, json, request
 
 app = Flask(__name__)
 c = OSC.OSCClient()
-file_handler = logging.FileHandler('oschttp.log')
+file_handler = logging.FileHandler('oschttp'+str(datetime.datetime.today().date())+'.log')
 app.logger.addHandler(file_handler)
 app.logger.setLevel(logging.INFO)
 
