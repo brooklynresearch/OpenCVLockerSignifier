@@ -10,3 +10,7 @@ python/lockerServe/oschttp.log
 *.xcuserstate
 
 *.xcuserstate
+
+*.xcuserstate
+
+*.log

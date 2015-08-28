@@ -99,6 +99,42 @@ def wowter(_row, _col, _state):
   c.send(oscmsg)
   return "GOOD JOB@"
 
+@app.route('/opencol/<int:_col>/', methods=['GET', 'POST'])
+def colopen(_col):
+  print _col
+
+  if(_col >= 0 and _col < 17):
+    for i in range(9):
+      oscmsg = OSC.OSCMessage()
+      oscmsg.setAddress("/startup")
+      oscmsg.append(i)
+      oscmsg.append(_col)
+      oscmsg.append(2)
+      c.send(oscmsg)
+      time.sleep(0.02)
+      print "opened row " + str(i) + " of col " + str(_col)
+    return "opened col " + str(_col)
+  else:
+    return "col: " + str(_col) + " is out of range"
+
+@app.route('/openrow/<int:_row>/', methods=['GET', 'POST'])
+def rowopen(_row):
+  print _row
+
+  if(_row >= 0 and _row < 9):
+    for i in range(17):
+      oscmsg = OSC.OSCMessage()
+      oscmsg.setAddress("/startup")
+      oscmsg.append(_row)
+      oscmsg.append(i)
+      oscmsg.append(2)
+      c.send(oscmsg)
+      time.sleep(0.02)
+      print "opened col " + str(i) + " of row " + str(_row)
+    return "opened col " + str(_row)
+  else:
+    return "row: " + str(_row) + " is out of range"
+
 if __name__ == "__main__":
   c.connect(('127.0.0.1', 9998))
   print "started flask server: " + str(datetime.datetime.now())
