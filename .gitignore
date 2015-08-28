@@ -6,3 +6,7 @@ bin/OpenCVLockerSignifierDebug.app/*
 OpenCVLockerSignifier.xcodeproj/project.xcworkspace/xcuserdata/stillness.xcuserdatad/UserInterfaceState.xcuserstate
 
 python/lockerServe/oschttp.log
+
+*.xcuserstate
+
+*.xcuserstate

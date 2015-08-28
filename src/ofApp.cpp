@@ -177,6 +177,16 @@ void ofApp::draw(){
             ofRect(i*dispWidth+marginX+vidOriginX, j*dispHeight+marginY+vidOriginY, dispWidth, dispHeight);
         }
     }
+    
+    if(manualSwitch){
+        ofSetColor(255,255,255);
+        ofDrawBitmapString("Currently in manual mode. Press 'm' or 'M' to toggle to playlist mode", 100, 700);
+    }
+    else {
+        ofSetColor(255,255,255);
+        ofDrawBitmapString("Currently in playlist mode. Press 'm' or 'M' to toggle to manual mode", 100, 700);
+    
+    }
 }
 
 //--------------------------------------------------------------
