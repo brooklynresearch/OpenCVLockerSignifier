@@ -73,7 +73,7 @@ void ofApp::setup(){
     // initialize timer
     stateChangeMillis = ofGetSystemTime();
     playlistIndex = 0;
-    playlistLength = 10;
+    playlistLength = 16;
     frameRate = 30;
     
     randPrevTime = stateChangeMillis;
