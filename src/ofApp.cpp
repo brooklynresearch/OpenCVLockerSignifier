@@ -6,7 +6,7 @@ void ofApp::setup(){
     numRows = 9;
     numColumns = 17;
     dispState = 2;
-    numStates = 12;
+    numStates = 13;
     
     // Chase colors
     CGreen = ofColor(70, 255, 32);
@@ -45,13 +45,13 @@ void ofApp::setup(){
         }
     }
     
-    sourceVid.loadMovie("movies/CHASE_OPEN_17x9_ball1_v7.mov");
+    sourceVid.loadMovie("movies/170x90_ball_1.mov");
     sourceVid.play();
 //    vidOriginX = sourceVid.getWidth();
     
     // video array
-    sourceVids.resize(4);
-    for(int i = 0; i < 4 ; ++i){
+    sourceVids.resize(5);
+    for(int i = 0; i < 5 ; ++i){
         sourceVids[i].loadMovie(videoNames[i]);
         sourceVids[i].play();
     }
@@ -135,16 +135,24 @@ void ofApp::update(){
             colorSweep();
             break;
         case 8:
+            // ball
             updateVid(0);
             break;
         case 9:
+            // bounce
             updateVid(1);
             break;
         case 10:
+            // pong
             updateVid(2);
             break;
         case 11:
+            // review
             updateVid(3);
+            break;
+        case 12:
+            // text
+            updateVid(4);
             break;
     }
     

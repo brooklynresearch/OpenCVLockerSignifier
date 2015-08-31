@@ -68,13 +68,20 @@ class ofApp : public ofBaseApp{
         int checkInDuration;
         int pickUpDuration;
         long long stateChangeMillis;
-        int playlistDuration[10] = {30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000};
-        int playlistState[10] = {2, 4, 2, 3, 2, 6, 2, 5, 2, 1};
+//        int playlistDuration[10] = {30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000, 30000};
+//        int playlistState[10] = {2, 4, 2, 3, 2, 6, 2, 5, 2, 1};
+//    
+        int playlistDuration[16] = {20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000, 20000};
+        int playlistState[16] = {2, 4, 2, 3, 2, 6, 2, 5, 2, 8, 2, 9, 2, 10, 2, 11};
+        
+        
         int playlistIndex;
         int playlistLength;
         int frameRate;
     
-        string videoNames[4] = {"movies/CHASE OPEN_17x9_ball bounce_v2.mov", "movies/CHASE_OPEN_17x9_ball1_v7.mov", "movies/CHASE_OPEN_17x9_PONG.mov", "movies/CHASE_USOPEN_TENNIS COURT_v2.mov" };
+//        string videoNames[4] = {"movies/CHASE OPEN_17x9_ball bounce_v2.mov", "movies/CHASE_OPEN_17x9_ball1_v7.mov", "movies/CHASE_OPEN_17x9_PONG.mov", "movies/CHASE_USOPEN_TENNIS COURT_v2.mov" };
+    
+        string videoNames[5] = {"movies/170x90_ball_1.mov", "movies/170x90_bounce_1.mov", "movies/170x90_pong_1.mov", "movies/170x90_review_1.mov", "movies/170x90_text_1.mov"};
     
         vector< ofVideoPlayer > sourceVids;
     
